@@ -47,12 +47,17 @@ def pil_grid(images, max_horiz=np.iinfo(int).max, margin=0, background='white'):
     """
     n_images = len(images)
     n_horiz = min(n_images, max_horiz)
+    print(f"len of n_images: {n_images}, len of n_horiz images:{n_horiz}")
     h_sizes, v_sizes = [0] * n_horiz, [0] * (n_images // n_horiz)
+    print(f"len of h_sizes: {len(h_sizes)}, v_sizes: {len(v_sizes)}")
     for i, im in enumerate(images):
         h, v = i % n_horiz, i // n_horiz
         h_sizes[h] = max(h_sizes[h], im.size[0]) + margin
         v_sizes[v] = max(v_sizes[v], im.size[1]) + margin
+        # print(f"snapshot in enumerate looping of h_sizes: {h_sizes[h]}, v_sizes: {v-sizes[v]}")
     h_sizes, v_sizes = np.cumsum([0] + h_sizes), np.cumsum([0] + v_sizes)
+    print(f"snapshot of h_sizes: {h_sizes}, v_sizes: {v_sizes}")
+    print(f"shape of h_sizes: {h_sizes.shape} and v_sizes: {v_sizes.shape}")
     im_grid = Image.new('RGB', (h_sizes[-1], v_sizes[-1]), color=background)
     for i, im in enumerate(images):
         im_grid.paste(im, (h_sizes[i % n_horiz], v_sizes[i // n_horiz]))
